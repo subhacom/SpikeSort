@@ -18,6 +18,6 @@ def export_cells(io_filter, node_templ, spike_times, overwrite=False):
         times structures
     """
 
-    for cell_id, spt_cell in spike_times.items():
+    for cell_id, spt_cell in list(spike_times.items()):
         dataset = node_templ.format(cell_id=cell_id)
         io_filter.write_spt(spt_cell, dataset, overwrite=overwrite)

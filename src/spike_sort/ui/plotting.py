@@ -12,7 +12,7 @@ def label_color(labels):
     """Map labels to number range [0,1]"""
     
     num_labels = np.linspace(0,1., len(labels))
-    mapper = dict(zip(labels, num_labels))
+    mapper = dict(list(zip(labels, num_labels)))
     
     @np.vectorize
     def map_func(lab):
@@ -48,11 +48,11 @@ def plot_spikes(spikes, clust_idx=None, show_cells='all', **kwargs):
         spikes_cell = spike_sort.extract.split_cells(spikes, clust_idx)
         
         if show_cells == 'all':
-            labs = spikes_cell.keys()
+            labs = list(spikes_cell.keys())
         else:
             labs = show_cells
        
-        color_func = label_color(spikes_cell.keys())
+        color_func = label_color(list(spikes_cell.keys()))
         for l in labs:
             spikegraph(spikes_cell[l], color_func(l), **kwargs)
     
@@ -117,11 +117,11 @@ def plot_features(features, clust_idx=None, show_cells='all', **kwargs):
         features_cell = spike_sort.features.split_cells(features, clust_idx)
         
         if show_cells == 'all':
-            labs = features_cell.keys()
+            labs = list(features_cell.keys())
         else:
             labs = show_cells
        
-        color_func = label_color(features_cell.keys())
+        color_func = label_color(list(features_cell.keys()))
         for l in labs:
             featuresgraph(features_cell[l], color_func(l),**kwargs)
     

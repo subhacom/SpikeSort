@@ -1,4 +1,5 @@
 import os
+import collections
 
 ######################################################################
 ## 
@@ -12,8 +13,8 @@ class FeatureBroker:
         self.allowReplace = allowReplace
     def Provide(self, feature, provider, *args, **kwargs):
         if not self.allowReplace:
-            assert not self.providers.has_key(feature), "Duplicate feature: %r" % feature
-        if callable(provider):
+            assert feature not in self.providers, "Duplicate feature: %r" % feature
+        if isinstance(provider, collections.Callable):
             def call(): return provider(*args, **kwargs)
         else:
             def call(): return provider
@@ -22,7 +23,7 @@ class FeatureBroker:
         try:
             provider = self.providers[feature]
         except KeyError:
-            raise AttributeError, "Unknown feature named %r" % feature
+            raise AttributeError("Unknown feature named %r" % feature)
         return provider()
 
 
@@ -60,7 +61,7 @@ def HasMethods(*methods):
                 attr = getattr(obj, each)
             except AttributeError:
                 return False
-            if not callable(attr): return False
+            if not isinstance(attr, collections.Callable): return False
         return True
     return test
 
@@ -161,17 +162,17 @@ class dictproperty(object):
 
         def __getitem__(self, key):
             if self._fget is None:
-                raise TypeError, "can't read item"
+                raise TypeError("can't read item")
             return self._fget(self._obj, key)
 
         def __setitem__(self, key, value):
             if self._fset is None:
-                raise TypeError, "can't set item"
+                raise TypeError("can't set item")
             self._fset(self._obj, key, value)
 
         def __delitem__(self, key):
             if self._fdel is None:
-                raise TypeError, "can't delete item"
+                raise TypeError("can't delete item")
             self._fdel(self._obj, key)
 
     def __init__(self, fget=None, fset=None, fdel=None, doc=None):

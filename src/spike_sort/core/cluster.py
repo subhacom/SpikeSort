@@ -85,9 +85,9 @@ def _metric_euclidean(data1, data2):
     n_pts1, n_dims1 = data1.shape
     n_pts2, n_dims2 = data2.shape
     if not n_dims1 == n_dims2:
-        raise TypeError, "data1 and data2 must have the same number of columns"
+        raise TypeError("data1 and data2 must have the same number of columns")
     delta = np.zeros((n_pts1, n_pts2),'d')
-    for d in xrange(n_dims1):
+    for d in range(n_dims1):
         _data1 = data1[:,d]
         _data2 = data2[:,d]
         _delta  = np.subtract.outer(_data1, _data2)**2

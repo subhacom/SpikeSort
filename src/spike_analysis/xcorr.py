@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def raise_exception(*args, **kwargs):
-    raise NotImplementedError, "This function requires NeuroTools"
+    raise NotImplementedError("This function requires NeuroTools")
 
 try:
     from NeuroTools.analysis import crosscorrelate
@@ -20,7 +20,7 @@ def show_xcorr(cells):
     ax=None
     for i in range(n):
         for j in range(i,n):
-            if i<>j:
+            if i != j:
                 ax = plt.subplot(n,n,i+j*n+1, sharey=ax)
 
                 crosscorrelate(cells[i]['spt'], cells[j]['spt'], maxlag,

@@ -6,7 +6,7 @@ Created on Feb 9, 2011
 
 import spike_sort as sort
 
-import base
+from . import base
 from spike_sort.io.filters import BakerlabFilter, PyTablesFilter
 from spike_sort import features
 from spike_sort.ui import plotting
@@ -98,7 +98,7 @@ class NoMeanSource(object):
         sp = io_filter.read_signal()
         stim = io_filter.events['stim']
         
-        print 'subtracting mean...'
+        print('subtracting mean...')
 
         wshapes = sort.extract.extract_spikes(sp, stim, window)
         mean_waves = np.mean(wshapes['data'], 1)
@@ -112,7 +112,7 @@ class NoMeanSource(object):
             insert_end_idx = insert_start_idx + mean_waves.shape[0]
             sp['data'][:,insert_start_idx:insert_end_idx] -= mean_waves.T
                
-        print '... done'
+        print('... done')
  
 class SpikeDetector(base.Component):
     """Detect Spikes with alignment"""
@@ -598,11 +598,11 @@ class ExportCells(base.Component):
         else: md = metadata
         
         if mapping is None:
-            for cell_id, spt in spt_clust.items():
+            for cell_id, spt in list(spt_clust.items()):
                 if md and cell_id!=0: spt['metadata'] = md
                 export_events['cell{0}'.format(cell_id)]=spt
         else:
-            for clust_id, cell_id in mapping.items():
+            for clust_id, cell_id in list(mapping.items()):
                 spt = spt_clust[clust_id]
                 if md and cell_id!=0: spt['metadata'] = md
                 export_events['cell{0}'.format(cell_id)]=spt
@@ -644,13 +644,13 @@ class Dashboard(MplPlotComponent):
         
         spt_all =  sort.cluster.split_cells(spike_idx, labels)
         
-        if self.cell not in spt_all.keys():
+        if self.cell not in list(spt_all.keys()):
             old_cell=self.cell
             for c in range(max(self.labels_src.labels) + 1)[::-1]:
-                if spt_all.has_key(c):
+                if c in spt_all:
                     self.cell=c
-                    print "Dashboard: cell %s doesn't exist, plotting cell %s" % \
-                          (old_cell, self.cell)
+                    print("Dashboard: cell %s doesn't exist, plotting cell %s" % \
+                          (old_cell, self.cell))
                     break
         
         dataset = {'spt':spt_all[self.cell]['data'], 'stim': stim['data'], 'ev':[]}

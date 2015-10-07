@@ -197,13 +197,13 @@ def detect_spikes(spike_data, thresh='auto', edge="rising",
     n_contacts = spike_data['n_contacts']
     
     if filter is not None:
-        sp_data = filter(sp_data, spike_data['FS'])
+        sp_data = list(filter(sp_data, spike_data['FS']))
     #if n_contacts>1:
     #    sp_data = sp_data[:,contact]
 
     FS = spike_data['FS']
 
-    if type(thresh) is str or type(thresh) is unicode:
+    if type(thresh) is str or type(thresh) is str:
         
         if thresh=='auto':
             thresh_frac = 8
@@ -299,8 +299,8 @@ def extract_spikes(spike_data, spt_dict, sp_win, resample=1,
         spWave[:,i,:] = sp_data[contacts, sp+win[0]:sp+win[1]].T
     for i in outer_idx:
         sp = indices[i]
-        l, r = map(minmax, sp+win)
-        if l<>r:
+        l, r = list(map(minmax, sp+win))
+        if l != r:
             spWave[(l-sp)-win[0]:(r-sp)-win[0],i,:] = sp_data[contacts, l:r].T
 
     wavedict = {"data":spWave, "time": time, "FS": FS}
@@ -310,7 +310,7 @@ def extract_spikes(spike_data, spt_dict, sp_win, resample=1,
         is_valid[inner_idx] = True
         wavedict['is_valid'] = is_valid
     
-    if resample<>1:
+    if resample != 1:
         warn("resample argument is deprecated."
              "Please update your code to use function"
              "resample_spikes", DeprecationWarning)

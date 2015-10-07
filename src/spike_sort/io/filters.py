@@ -160,7 +160,7 @@ class BakerlabFilter:
     def _match_dataset(self, dataset):
         m = re.match(self._regexp, dataset)
         if not m:
-            StandardError("dataset id could not be parsed")
+            Exception("dataset id could not be parsed")
         return m.groupdict()
     
     def read_spt(self,  dataset):
@@ -209,7 +209,7 @@ class BakerlabFilter:
         export_spt = (spt*200).astype(np.int32)
         export_spt.tofile(fname)
         
-        if spt_dict.has_key('metadata'):
+        if 'metadata' in spt_dict:
             log_fname = fname[:-3]+'log'
             if os.path.exists(log_fname) and not overwrite:
                 raise IOError("file {0} already exists".format(log_fname))
@@ -349,7 +349,7 @@ class PyTablesFilter:
         attrs = spt_dict.copy()
         del attrs['data']
     
-        for k, v in attrs.items():
+        for k, v in list(attrs.items()):
             arr_node.setAttr(k, v)
     
     def write_sp(self, sp_dict, dataset,overwrite=False):

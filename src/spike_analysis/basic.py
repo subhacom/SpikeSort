@@ -22,10 +22,10 @@ def SortSpikes(spt,stim,win=None):
     i = np.searchsorted(stim,spt)
     spt2 = (spt-stim[i-1])
     if win:
-        corrected = filter(lambda x: win[1]>x[0]>=win[0], zip(spt2,i))
+        corrected = [x for x in zip(spt2,i) if win[1]>x[0]>=win[0]]
         spt2 = np.array([x[0] for x in corrected])
         i = np.array([x[1] for x in corrected])
-    return [spt2[i==j] for j in xrange(1,len(stim)+1)] 
+    return [spt2[i==j] for j in range(1,len(stim)+1)] 
 
 def plotraster(spt,stim,win=[0,30],ntrials=None,ax=None,height=1.):
     """Creates raster plots of spike trains:
@@ -49,7 +49,7 @@ def plotraster(spt,stim,win=[0,30],ntrials=None,ax=None,height=1.):
     plt.ylabel('trials')
 
 def plottrains(trains,win=[0,30],ntrials=None,height=1.):
-    print "Deprecation: Please use plotRasterTrains insted"
+    print("Deprecation: Please use plotRasterTrains insted")
     plotRasterTrains(trains,win,ntrials,height)
 
 def plotRasterTrains(trains,win=[0,30],ntrials=None,height=1.):

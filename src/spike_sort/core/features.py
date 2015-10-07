@@ -16,6 +16,7 @@ Each of the function returns a (mapping) object with following keys:
 
 import numpy as np
 import matplotlib.pyplot as plt
+from functools import reduce
 
 def split_cells(features, idx, which='all'):
     """return the spike features splitted into separate cells"""
@@ -71,7 +72,7 @@ def select_spikes(features, idx):
     
     new_feats = features.copy()
     new_feats['data'] = features['data'][idx, :]
-    if features.has_key('is_valid'):
+    if 'is_valid' in features:
         new_feats['is_valid'] = features['is_valid'][idx]
     return new_feats
 
@@ -100,7 +101,7 @@ def combine(args, norm=True):
             mask = reduce(np.logical_and, mask)
         data  = np.hstack(features)
     except ValueError:
-        raise ValueError, 'all features must contain the same number of spikes'
+        raise ValueError('all features must contain the same number of spikes')
     
     combined_features = {"data": data,
                          "names":np.concatenate(names)}

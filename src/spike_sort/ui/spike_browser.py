@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 from matplotlib.collections import LineCollection
 from matplotlib.widgets import Button
 
-import Tkinter as Tk
+import tkinter as Tk
 
 from spike_sort.ui import label_color
 

@@ -2,7 +2,7 @@
 #coding=utf-8
 
 import numpy as np
-import extract, cluster
+from . import extract, cluster
 import warnings
 
 def deprecation(message):
